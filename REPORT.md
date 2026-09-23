@@ -43,24 +43,21 @@ All work strictly follows the Elevanceskills guidelines: single coherent project
 
 
 
-┌─────────────────┐
-│  Text Prompt    │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ HF Tokenizer +  │  (BERT or CLIP)
-│ Text Encoder    │
-└────────┬────────┘
-         │ embedding (B, H)
-         ▼
-┌─────────────────┐     ┌──────────┐
-│ Noise z         │────▶│ Generator│ (CGAN or Attn-GAN)
-└─────────────────┘     │ + Attn   │
-                        └────┬─────┘
-                             │
-                             ▼
-                        Generated Image
+```
+Text Prompt
+    │
+    ▼
+Hugging Face Tokenizer + Encoder (BERT / CLIP)
+    │
+    ▼
+Text Embedding  ──────────────────────────────┐
+    │                                         │
+    ▼                                         │
+Noise z  →  Generator (CGAN / AttnGAN)  ←─────┘
+    │
+    ▼
+Generated Image
+```
 
 
 
