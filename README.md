@@ -120,23 +120,6 @@ text2image-gan-pipeline/
 └── outputs/                 # samples, checkpoints, logs
 ```
 
----
-
-## Submission Checklist
-
-- [x] All 6 tasks implemented as features of the **same** project
-- [ ] GitHub repository (public or private with access for evaluators)
-- [ ] Live URL (Gradio share link or deployed demo)
-- [ ] Project report (short PDF/Markdown describing architecture, experiments, results)
-- [ ] Daily work reports logged on the Elevanceskills dashboard
-
----
-
-## Daily Progress Log (example for dashboard)
-
-> Today I set up the complete project skeleton, mapped all 6 internship tasks to modules/notebooks, implemented the Hugging Face text encoder, the simple CGAN for shapes, and the dataset exploration notebook. Next: attention layers + full pipeline + SD LoRA fine-tuning.
-
----
 
 ## Licence & Acknowledgements
 
