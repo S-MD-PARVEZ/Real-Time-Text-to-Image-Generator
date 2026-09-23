@@ -37,6 +37,12 @@ All work strictly follows the Elevanceskills guidelines: single coherent project
 
 ## 3. System Architecture
 
+
+
+
+
+
+
 ┌─────────────────┐
 │  Text Prompt    │
 └────────┬────────┘
@@ -55,6 +61,11 @@ All work strictly follows the Elevanceskills guidelines: single coherent project
                              │
                              ▼
                         Generated Image
+
+
+
+
+                  
 ```
 
 
