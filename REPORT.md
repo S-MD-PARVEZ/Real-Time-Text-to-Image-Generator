@@ -41,6 +41,24 @@ By the end of this internship, the following learning objectives were achieved:
 
 ---
 
+## System Architecture 
+
+```
+Text Prompt
+    │
+    ▼
+Hugging Face Tokenizer + Encoder (BERT / CLIP)
+    │
+    ▼
+Text Embedding  ──────────────────────────────┐
+    │                                         │
+    ▼                                         │
+Noise z  →  Generator (CGAN / AttnGAN)  ←─────┘
+    │
+    ▼
+Generated Image
+```
+
 ## 4. Activities and Tasks
 
 All six required tasks were completed as additional features of the same project.
