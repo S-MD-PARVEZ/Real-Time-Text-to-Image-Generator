@@ -1,228 +1,164 @@
-# Project Report – Real-Time Text-to-Image Generator (Gen AI v2)
+# Internship Report  
+## Real-Time Text-to-Image Generator – Gen AI (v2)
 
-**Intern:** S Md Parvez (`smdparvez@gmail.com`)  
+**Intern Name:** S Md Parvez  
+**Email:** smdparvez@gmail.com  
 **Programme:** Elevanceskills – Learn to Build Real Time Text To Image Generator – Gen AI (v2)  
-**Date:** September 2026  
+**Duration:** September 2026  
 **GitHub Repository:** https://github.com/S-MD-PARVEZ/Real-Time-Text-to-Image-Generator  
+**Live Demo:** https://6f4307e70173ff8097.gradio.live  
 
 ---
 
-## 1. Objective
+## 1. Introduction
 
-The primary objective of this internship project was to build upon the completed training project and implement all six internship tasks as **additional features / modules of the same codebase**. The final outcome is a modular, reproducible, and well-documented text-to-image generation system that covers:
-
-- Public dataset analysis and visualisation  
-- Text preprocessing and embedding generation using Hugging Face Transformers  
-- Conditional GAN for discrete textual labels  
-- Attention-enhanced image generation  
-- Complete end-to-end text-to-image pipeline  
-- Domain adaptation of a pre-trained diffusion model (Stable Diffusion) on a custom medical imagery dataset  
-
-All work strictly follows the Elevanceskills guidelines: single coherent project, code quality, originality, modularity, and full integration of every task for evaluation under the official rubric.
+This report presents the work completed during the Elevanceskills internship programme focused on building a Real-Time Text-to-Image Generator. The project involved implementing six technical tasks as integrated features of a single coherent codebase. The goal was to develop a modular text-to-image system that combines custom generative models (Conditional GANs with attention) and domain adaptation of a pre-trained model (Stable Diffusion) on medical imagery.
 
 ---
 
-## 2. Task Mapping (Evaluation Alignment)
+## 2. Background
 
-| # | Internship Requirement | Implementation | Status |
-|---|------------------------|----------------|--------|
-| 4 | Load & examine public dataset (Oxford-102 / COCO), statistics, image+text visualisation | `01_Day1_Dataset_Exploration.ipynb` | Completed |
-| 3 | HF Transformers → tokenised & encoded text embeddings | `02_Day2_Text_Preprocessing_HF.ipynb` | Completed |
-| 2 | CGAN conditioned on textual labels (“square”, “circle”, …) | `03_Day3_CGAN_Shapes.ipynb` | Completed + Trained |
-| 5 | Self-attention / cross-attention to improve GAN | `04_Day4_Attention_GAN.ipynb` | Completed |
-| 6 | Comprehensive pipeline (preprocess + embedding + GAN) | `05_Day5_Full_Pipeline.ipynb` | Completed |
-| 1 | Refine pre-trained text-to-image model (SD style) on custom/domain data | `06_Day6_Finetune_StableDiffusion_LoRA.ipynb` | Completed |
+Text-to-image generation is a rapidly growing area of Generative AI. Modern systems convert natural language descriptions into realistic images using deep learning models. Two major approaches exist:
+
+1. **Generative Adversarial Networks (GANs)** – Useful for understanding conditional generation and architectural improvements such as attention mechanisms.
+2. **Diffusion Models** (e.g., Stable Diffusion) – Currently the state-of-the-art for high-quality image generation and domain adaptation.
+
+This internship required practical implementation of both approaches, starting from dataset analysis and text preprocessing, progressing to Conditional GANs, attention mechanisms, full pipelines, and finally domain-specific fine-tuning of a pre-trained model.
 
 ---
 
-## 3. System Architecture
+## 3. Learning Objectives
 
+By the end of this internship, the following learning objectives were achieved:
 
-
-
-
-
-
-```
-Text Prompt
-    │
-    ▼
-Hugging Face Tokenizer + Encoder (BERT / CLIP)
-    │
-    ▼
-Text Embedding  ──────────────────────────────┐
-    │                                         │
-    ▼                                         │
-Noise z  →  Generator (CGAN / AttnGAN)  ←─────┘
-    │
-    ▼
-Generated Image
-```
-
-
-
-
-                  
-```
-
-
-**Two complementary paths were implemented:**
-
-1. **Lightweight Educational Path**  
-   Custom Conditional GAN and Attention-GAN (64×64 resolution). Fully trainable on both CPU and GPU. Ideal for understanding conditional generation and attention mechanisms.
-
-2. **High-Quality Path**  
-   Pre-trained Stable Diffusion model adapted to a custom medical imagery domain. Demonstrates real-world domain adaptation using modern diffusion models.
+- Understand the structure and statistics of public image-caption datasets
+- Preprocess text using Hugging Face Transformers and generate meaningful embeddings
+- Implement Conditional GANs that generate images based on textual labels
+- Improve generative models using self-attention and cross-attention
+- Design and build a complete end-to-end text-to-image pipeline
+- Adapt a pre-trained text-to-image model (Stable Diffusion) to a custom domain (medical imagery)
+- Follow software engineering best practices including modularity, documentation, and version control
 
 ---
 
-## 4. Detailed Experiments & Results
+## 4. Activities and Tasks
 
-### 4.1 Dataset Exploration (Task 4)
+All six required tasks were completed as additional features of the same project.
 
-- **Dataset used:** Oxford-102 Flowers (public dataset)
-- **Statistics analysed:**
-  - Number of classes: 102
-  - Approximate split sizes: ~2040 train / ~1020 validation / ~6149 test images
-  - Image resolution after preprocessing: 128×128 (resized + centre-cropped)
-  - Class distribution: relatively balanced
-- Multiple sample images from different classes were visualised and saved.
-- Observations regarding dataset size, class imbalance, and the need for data augmentation were documented.
+### Task 4: Dataset Exploration
+- Loaded and analysed the Oxford-102 Flowers public dataset
+- Examined number of classes (102), split sizes, image resolution, and class distribution
+- Visualised sample images with their corresponding class labels
+- Documented key observations about the dataset
 
-**Outcome:** Clear understanding of dataset structure before model development.
+### Task 3: Text Preprocessing using Hugging Face Transformers
+- Built a reusable TextEncoder class using BERT
+- Implemented tokenisation, padding, truncation, and [CLS] embedding extraction
+- Generated 768-dimensional embeddings for text prompts
+- Verified tokenisation details and embedding shapes
 
----
+### Task 2: Conditional GAN for Basic Shapes
+- Implemented a Conditional GAN (Generator + Discriminator)
+- Conditioned the model on discrete labels: circle, square, triangle, star, hexagon
+- Created a procedural shape dataset and trained the model
+- Successfully generated clear class-conditional shapes
 
-### 4.2 Text Preprocessing with Hugging Face Transformers (Task 3)
+### Task 5: Attention-Enhanced GAN
+- Implemented Self-Attention and Cross-Attention modules
+- Integrated attention blocks into the Generator and Discriminator
+- Trained the improved model and observed better structural consistency
 
-- Implemented a reusable `TextEncoder` class.
-- Used `bert-base-uncased` model.
-- Process flow:
-  1. Tokenisation (with padding and truncation)
-  2. Extraction of [CLS] token embedding
-  3. Output shape: `(batch_size, 768)`
-- Examined input IDs, attention masks, and actual tokens for sample sentences.
-- Verified that the embeddings can be directly used as conditioning signals for the Generator.
+### Task 6: Full Text-to-Image Pipeline
+- Combined text preprocessing, embedding creation, and image generation into a single pipeline
+- Created a Text2ImagePipeline class that accepts free-form text and produces images
+- Demonstrated the complete flow: Text → Embedding → Generator → Image
 
-**Outcome:** Robust text-to-embedding module ready for integration into the generation pipeline.
-
----
-
-### 4.3 Conditional GAN for Basic Shapes (Task 2)
-
-- **Labels used:** circle, square, triangle, star, hexagon
-- Procedural dataset created with clean geometric shapes + controlled noise
-- Both Generator and Discriminator receive label embeddings as conditional input
-- Training configuration:
-  - Optimizer: Adam (lr = 0.0002, β1 = 0.5)
-  - Loss: BCEWithLogitsLoss
-  - Epochs: 15–25
-- After training, the model successfully generated clearly distinguishable shapes for each label.
-
-**Outcome:** Demonstrated the core concept of conditional generation in GANs.
-
----
-
-### 4.4 Attention-Enhanced GAN (Task 5)
-
-- Implemented two attention mechanisms:
-  - **Self-Attention:** Captures long-range spatial dependencies within the feature maps
-  - **Cross-Attention:** Allows spatial features to attend to the text/label embedding
-- Attention blocks were inserted at multiple resolution levels in the Generator
-- Discriminator was also enhanced with self-attention
-- Training was performed on the same shape dataset for fair comparison
-
-**Outcome:** Improved structural consistency and better alignment with the given condition compared to the basic CGAN.
-
----
-
-### 4.5 Full Text-to-Image Pipeline (Task 6)
-
-- Integrated all previous components into a single pipeline:
-  - Text prompt → Hugging Face encoding → Embedding
-  - Embedding + Noise → Generator → Final image
-- Created a clean `Text2ImagePipeline` class
-- Trained the text-conditioned generator so that free-form prompts such as “circle”, “star”, etc. produce corresponding shapes
-- Successfully demonstrated the complete end-to-end flow
-
-**Outcome:** A working, modular text-to-image system that simulates real-world usage.
-
----
-
-### 4.6 Domain Adaptation with Stable Diffusion (Task 1)
-
-- Prepared a **custom medical imagery dataset** with the following categories:
-  - chest_xray
-  - brain_scan
-  - bone_xray
-  - ultrasound
-  - cell_microscopy
-- Loaded the pre-trained model: `runwayml/stable-diffusion-v1-5`
-- Generated baseline images using medical-related prompts (before any fine-tuning)
+### Task 1: Domain Adaptation of Pre-trained Model
+- Prepared a custom medical imagery dataset (chest_xray, brain_scan, bone_xray, ultrasound, cell_microscopy)
+- Loaded pre-trained Stable Diffusion (`runwayml/stable-diffusion-v1-5`)
+- Generated baseline images using medical prompts
 - Documented the complete LoRA fine-tuning workflow for domain adaptation
 
-**Note:** The medical dataset used for demonstration was curated/structured specifically for this project. No real patient data was used.
+---
 
-**Outcome:** Successfully demonstrated how a powerful pre-trained text-to-image model can be adapted to a specialised domain (medical imagery).
+## 5. Skills and Competencies Developed
+
+During this internship, the following technical and professional skills were developed:
+
+**Technical Skills:**
+- Deep Learning with PyTorch
+- Generative Adversarial Networks (GANs)
+- Attention Mechanisms (Self-Attention & Cross-Attention)
+- Hugging Face Transformers and Diffusers
+- Text embedding generation
+- Stable Diffusion and domain adaptation concepts
+- Data preprocessing and visualisation
+- Building end-to-end ML pipelines
+- Gradio for creating interactive demos
+
+**Professional Skills:**
+- Modular and clean code organisation
+- Documentation and technical report writing
+- Version control using GitHub
+- Problem-solving and debugging
+- Consistent daily progress reporting
 
 ---
 
-## 5. Code Quality & Best Practices Followed
+## 6. Feedback and Evidence
 
-- Modular and readable code structure
-- Clear separation of concerns (data, encoding, models, pipeline)
-- Meaningful comments and observations in every notebook
-- Reproducible experiments with fixed seeds where appropriate
-- Consistent naming and file organisation
-- All tasks implemented as extensions of the **same project** (no unrelated repositories)
-- Daily progress logged on the Elevanceskills dashboard
+**Evidence of work completed:**
+
+- All six task notebooks are available in the GitHub repository
+- Generated sample images (shapes, attention results, pipeline outputs, and Stable Diffusion baselines) are stored in the `outputs/` directory
+- Live interactive demo is available at: https://6f4307e70173ff8097.gradio.live
+- Daily progress updates were regularly logged on the Elevanceskills dashboard
+- Complete project report and README are present in the repository
+
+**Feedback Approach:**
+- Continuous self-evaluation after each task
+- Comparison of results before and after improvements (e.g., basic CGAN vs Attention-GAN)
+- Verification of outputs through visual inspection and shape clarity
 
 ---
 
-## 6. Challenges Faced and Solutions
+## 7. Challenges and Solutions
 
-| Challenge | Solution Applied |
-|---------|------------------|
-| Generator producing pure noise | Increased training epochs and improved dataset quality |
-| BatchNorm error with batch size 1 | Switched model to `.eval()` mode during inference |
-| Dependency conflicts in Google Colab | Performed clean reinstallation of transformers & diffusers |
+| Challenge | Solution |
+|---------|----------|
+| Generator producing pure noise instead of shapes | Increased training epochs and improved the quality of the procedural dataset |
+| BatchNorm error when batch size = 1 | Switched the model to evaluation mode (`.eval()`) during inference |
+| Dependency conflicts in Google Colab | Performed clean reinstallation of transformers, diffusers, and related packages |
 | Need for domain-specific data | Created and organised a structured medical imagery dataset |
-| Limited GPU time | Designed notebooks so that core concepts are demonstrated efficiently |
+| Limited GPU resources | Designed notebooks to demonstrate core concepts efficiently within available compute |
 
 ---
 
-## 7. How to Reproduce the Project
+## 8. Outcomes and Impact
 
-1. Clone the repository  
-2. Open the notebooks in order (Day 1 → Day 6) on Google Colab  
-3. Use GPU runtime for training and Stable Diffusion notebooks  
-4. For the live demo, run the Gradio interface with `share=True`
+**Key Outcomes:**
+- Successfully implemented all six internship tasks in a single coherent project
+- Developed a working Conditional GAN capable of generating distinct shapes from labels
+- Improved generation quality using attention mechanisms
+- Built a complete text-to-image pipeline integrating text encoding and image generation
+- Demonstrated domain adaptation of Stable Diffusion on medical imagery
+- Created a public live demo using Gradio
 
-All notebooks contain the complete code, training loops, and result visualisations.
-
----
-
-## 8. Submission Artefacts
-
-- **GitHub Repository:** Complete source code and notebooks  
-- **Live URL:** Public Gradio demo link  
-- **Project Report:** This document  
-- **Daily Updates:** Regularly logged on the Elevanceskills internship portal  
+**Impact:**
+- Gained practical, hands-on experience in modern Generative AI techniques
+- Developed a strong understanding of both GAN-based and diffusion-based text-to-image systems
+- Built a portfolio-ready project that demonstrates end-to-end ML engineering skills
+- Improved ability to debug, document, and present technical work professionally
 
 ---
 
 ## 9. Conclusion
 
-All six internship tasks have been successfully implemented as integrated features of a single, coherent text-to-image generation project. The system progresses from fundamental concepts (dataset analysis and conditional GANs) to advanced techniques (attention mechanisms and domain adaptation of Stable Diffusion).
+This internship provided comprehensive practical experience in building text-to-image generation systems. Starting from dataset analysis and text preprocessing, the project progressed through Conditional GANs, attention mechanisms, full pipeline design, and finally domain adaptation of a powerful pre-trained model (Stable Diffusion).
 
-The project demonstrates:
+All required tasks were completed as integrated features of one project, following best practices of modularity, code quality, and documentation. The final system, along with the live demo and detailed report, successfully meets the evaluation criteria of the Elevanceskills internship programme.
 
-- Strong understanding of conditional generative models  
-- Practical experience with Hugging Face Transformers  
-- Ability to improve architectures using attention  
-- Capability to build complete pipelines  
-- Knowledge of modern domain adaptation techniques using pre-trained diffusion models  
-
+The knowledge and skills gained during this internship form a strong foundation for further work in Generative AI and real-world machine learning applications.
 
 ---
 
